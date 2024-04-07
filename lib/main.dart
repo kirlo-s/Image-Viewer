@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_viewer/gallery_window.dart';
 import 'package:image_viewer/pick_window.dart';
-
+import 'package:path_provider/path_provider.dart';
 
 final imageDirectoryProvider = StateProvider<Directory?>((ref) => null);
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final cacheDirectory = await getApplicationCacheDirectory();
+  cacheDirectory.deleteSync(recursive: true);
   runApp(const ProviderScope(child: MyApp()));
 }
 

@@ -10,13 +10,13 @@ class PickWindow extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref){
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pick Directory"),
+        title: const Text("Folder Selection"),
       ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("Pick the directory where the images are located."),
+            const Text("Pick the folder where the images are located."),
             ElevatedButton(
               onPressed: () async {
                 String? selectedDirectoryPath = await FilePicker.platform.getDirectoryPath();
@@ -26,7 +26,7 @@ class PickWindow extends ConsumerWidget {
                     builder: (context) {
                       return AlertDialog(
                         title: const Text("The Path is not Provided."),
-                        content: const Text("Choose the directory aganin."),
+                        content: const Text("Select folder aganin."),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context), 

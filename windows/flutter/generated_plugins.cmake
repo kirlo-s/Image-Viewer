@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  fc_native_image_resize
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
