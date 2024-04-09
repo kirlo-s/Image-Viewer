@@ -2,10 +2,14 @@ import "dart:io";
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_viewer/gallery_window.dart';
+import 'package:image_viewer/image_window.dart';
 import 'package:image_viewer/pick_window.dart';
 import 'package:path_provider/path_provider.dart';
 
 final imageDirectoryProvider = StateProvider<Directory?>((ref) => null);
+final imageWindowIndexProvider = StateProvider<int?>((ref) => null);
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +45,11 @@ class HomeView extends ConsumerWidget{
     if(imageDirectory == null){
       return PickWindow();
     } else{
-      return GalleryWindow();
+      if(ref.watch(imageWindowIndexProvider) == null){
+        return const GalleryWindow();
+      }else{
+        return const ImageWindow();
+      }
     }
   }
 }

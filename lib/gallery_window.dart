@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +21,7 @@ final imageListProvider = FutureProvider<List<File>>((ref) {
   }
   return imageFileList;
 });
+final crossAxisCountProvider = StateProvider<double>((ref) => 4.0);
 
 class GalleryWindow extends ConsumerStatefulWidget{
   const GalleryWindow({super.key});
@@ -32,7 +32,6 @@ class GalleryWindow extends ConsumerStatefulWidget{
 
 class _GalleryWindowState extends ConsumerState<GalleryWindow>{
   int imageCount = 0;
-  double _crossAxisCount = 4;
   
   @override
   void initState() {
@@ -55,14 +54,12 @@ class _GalleryWindowState extends ConsumerState<GalleryWindow>{
         actions: [
           const Icon(Icons.grid_view_rounded),
           Slider(
-            value: _crossAxisCount, 
-            min:1,
+            value: ref.watch(crossAxisCountProvider),
+            min:2,
             max:7,
-            divisions: 6,
+            divisions: 5,
             onChanged: (value) {
-              setState(() {
-                _crossAxisCount = value;
-              });
+              ref.watch(crossAxisCountProvider.notifier).state = value;
             } 
           ),
           IconButton(
@@ -105,12 +102,13 @@ class _GalleryWindowState extends ConsumerState<GalleryWindow>{
           imageCount = data.length;
           return GridView.builder(
             key: const PageStorageKey("galleryGrid"),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: _crossAxisCount.toInt()),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: ref.watch(crossAxisCountProvider).toInt()),
             itemCount: data.length,
             itemBuilder: (context,index) {
-              final imageFile = data[index];
               return InkWell(
-                onTap: null,
+                onTap: (){
+                  ref.watch(imageWindowIndexProvider.notifier).state = index;
+                },
                 child: GridTile(
                   child: FutureBuilder(
                     future: _cacheThumbnail(data[index]),
