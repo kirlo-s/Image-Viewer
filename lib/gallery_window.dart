@@ -140,7 +140,11 @@ Future<File> _cacheThumbnail(File imageFile) async{
   if(await thumbnailFile.exists()){
     return thumbnailFile;
   }
- 
+  
+  if(Platform.isLinux){
+    return imageFile;
+  }
+  print("a");
   await fcPlugin.resizeFile(
     srcFile: imageFile.path, 
     destFile: thumbnailPath, 
